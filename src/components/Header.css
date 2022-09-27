@@ -7,7 +7,7 @@
 .title{
     user-select: none;
     background-color: bisque;
-    font-size: calc(10vh);
+    font-size: 1rem;
     display: grid;
     align-items: center;
     justify-content: center;

@@ -1,5 +1,16 @@
 .tile{
-    background-color: black;
-    width: 100px;
-    height: 100px;
+    user-select: none;
+    cursor: pointer;
+    box-shadow: 5px 0px 10px black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    height: 100%;
+    width: 100%;
+}
+
+.tile:hover{
+    background-color: grey;
 }
