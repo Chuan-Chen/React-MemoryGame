@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap');
+body{
+    margin: 0;
+    font-family: 'Noto Sans Mono', monospace;
+    height: 100vh;
+}
+
+.content{
+    height: 100%;
+    display: grid;
+    
+}

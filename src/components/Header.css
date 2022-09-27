@@ -1,0 +1,16 @@
+.header{
+
+}
+.logo{
+    height: 10rem;
+}
+.title{
+    user-select: none;
+    background-color: bisque;
+    font-size: calc(10vh);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 20vh;
+}
