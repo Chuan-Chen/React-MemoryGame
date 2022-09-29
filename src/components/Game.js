@@ -3,21 +3,36 @@ import Score from "./Score";
 import Tile from "./Tile";
 import tiles from "./Tiles.json"
 import "./Game.css"
+let Tiles = ["🤩", "🤪", "🤭", "🤫", "🤮", "🤯", "🤬", "🛸", "₿" ];
 
 export default function Game(props){
     const [score, setScore] = useState(0);
     const [hScore, sethScore] = useState(0);
     const [reset, setReset] = useState(false);
-    const [Tiles, setTiles] = useState(["🤩", "🤪", "🤭", "🤫", "🤮", "🤯", "🤬", "🛸", "₿" ]);
+    const [comp, setComp] = useState([]);
+
+
+
+    useEffect(()=>{
+        console.log("useeffect setting up comp")
+        setComp(createTileComponent());
+    },[]);
 
     useEffect(()=>{
         if(score === 9){
             setScore(0);
             setReset(true);
-            console.log("useeffect in game");
         }
-       
+        console.log("useeffect in game");
     },[score]);
+    
+    function createTileComponent(){
+        let array = []; 
+        Tiles.map((item, i)=>{
+            array.push(<Tile resetGame={resetGame} onClickHandler={clickHandler} name={item} key={i} value={reset} hScore={hScore}/>)
+        })
+        return array;
+    }
 
     function shuffle(stuff){
         let array = [...stuff];
@@ -46,17 +61,17 @@ export default function Game(props){
         }else if(hasClicked){
             setScore(0);
             setReset(true);
-            setTiles(shuffle(Tiles));
+            setComp(shuffle(comp));
         }else{
             setScore(score + 1);
-            setTiles(shuffle(Tiles));
+            setComp(shuffle(comp));
             if(hScore <= score){
                 sethScore(score + 1);
             }
         }
         
     }
-
+    //<Tile resetGame={resetGame} onClickHandler={clickHandler} name={item} key={i} value={reset} hScore={hScore}
     return(
        
         <div className = "container">
@@ -68,10 +83,9 @@ export default function Game(props){
                 <div className = "gameContainer">
                 
                 {
-                    Tiles.map((item, i)=>{return <Tile resetGame ={resetGame} onClickHandler={clickHandler} name={item} key={i} value={reset} hScore={hScore}/>})
+                    comp.map((item) => {return item})
                 }   
-                
-                
+
                 </div>
             </div>
         </div>
