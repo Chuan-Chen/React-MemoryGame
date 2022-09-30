@@ -8,6 +8,8 @@ export default function Game(props){
     const [score, setScore] = useState(0);
     const [hScore, sethScore] = useState(0);
     const [Tiles, setTiles] = useState([{name: "🤩", clicked: false}, {name: "🤪", clicked: false}, {name: "🤭", clicked: false}, {name: "🤫", clicked: false}, {name: "🤮", clicked: false}, {name: "🤯", clicked:false}, {name: "🤬", clicked: false}, {name: "🛸", clicked: false}, {name: "₿", clicked:false} ]);
+    const [animations, setAnimations] = useState(false);
+
 
     useEffect(()=>{
         console.log(score)
@@ -15,9 +17,7 @@ export default function Game(props){
             //setScore(0);
             resetGame();
         }
-        console.log("useeffect in game");
     },[score]);
-    
 
     function shuffle(stuff){
         let array = [...stuff];
@@ -44,7 +44,7 @@ export default function Game(props){
         }
         array[index].clicked = click;
         setTiles(array);
-
+        
     }
 
     function resetGame(){
@@ -53,12 +53,11 @@ export default function Game(props){
             array[i].clicked = false;
         }
     }
-    
 
     function clickHandler(e, hasClicked){
-        console.log("click handler", hasClicked);
-        console.log(e.target.textContent)
+        
         changeTileState(e.target.textContent, !hasClicked);
+        setAnimations("shuffle");
         if(score === 9){
 
         }else if(hasClicked){
@@ -85,11 +84,10 @@ export default function Game(props){
                 <Score score={hScore} name = "High Score"/>
             </div>
             <div className = "center">
-                <div className = "gameContainer">
+                <div className = {`gameContainer ${animations ? "shuffle" : ""}`} onClick = {()=>{setAnimations(true)}} onanimationend={()=>{setAnimations(false)}}>
                     {Tiles.map((item, i) => {return <Tile resetGame={resetGame} onClickHandler={clickHandler} name={item.name} key={i} clicked={item.clicked} hScore={hScore}></Tile>})}
                 </div>
             </div>
         </div>
-
     );
 }

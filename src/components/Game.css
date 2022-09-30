@@ -28,3 +28,12 @@
     justify-content: space-evenly;
     align-items: center;
 }
+
+.shuffle{
+    animation-duration: 2s;
+}
+
+@keyframes shuffle {
+    from {background-color: black;}
+    to {background-color: blue;}
+}
