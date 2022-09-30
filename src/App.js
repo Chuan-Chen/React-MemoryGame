@@ -1,4 +1,5 @@
 import React from "react";
+
 import Footer from "./components/Footer";
 import Game from "./components/Game";
 import Header from "./components/Header";
@@ -8,9 +9,8 @@ export default function App(){
     
     return (
         <div className="content">
-            <Header/>
-            <Game/>
-            <Footer/>
+                    <Game/>
+                    <Footer/>
         </div>
         
     );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Score from "./Score";
+import Scene from "./Scene"
 import Tile from "./Tile";
 import tiles from "./Tiles.json"
 import "./Game.css"
@@ -7,14 +8,16 @@ import "./Game.css"
 export default function Game(props){
     const [score, setScore] = useState(0);
     const [hScore, sethScore] = useState(0);
-    const [Tiles, setTiles] = useState([{name: "🤩", clicked: false}, {name: "🤪", clicked: false}, {name: "🤭", clicked: false}, {name: "🤫", clicked: false}, {name: "🤮", clicked: false}, {name: "🤯", clicked:false}, {name: "🤬", clicked: false}, {name: "🛸", clicked: false}, {name: "₿", clicked:false} ]);
+    const [Tiles, setTiles] = useState([{name: "😄", clicked: false}, {name: "😁", clicked: false}, {name: "😆", clicked: false}, {name: "😅", clicked: false}, {name: "🤣", clicked: false}, {name: "😂", clicked:false}, {name: "🙂", clicked: false}, {name: "🙃", clicked: false}, {name: "😉", clicked:false} ]);
+    const [LastTile, setLastTile] = useState(Tiles[Tiles.length-1]);
     const [animations, setAnimations] = useState(false);
-
+    const [show, setShow] = useState(true);
 
     useEffect(()=>{
-        console.log(score)
-        if(score === 9){
-            //setScore(0);
+        if(score%9 === 0 && score != 0){
+            console.log("change board ")
+            console.log("score up", score)
+            changeBoard();
             resetGame();
         }
     },[score]);
@@ -42,6 +45,7 @@ export default function Game(props){
                 break;
             }
         }
+        
         array[index].clicked = click;
         setTiles(array);
         
@@ -54,16 +58,32 @@ export default function Game(props){
         }
     }
 
+    function changeBoard(){
+        let array = [...Tiles];
+        let lastChar = LastTile.name.codePointAt(0);
+        
+
+        for(let i = 0; i < array.length; i++){
+            if(i == 0){
+                array[i].name = String.fromCodePoint(lastChar+1);
+            }else{
+                array[i].name = String.fromCodePoint(array[i-1].name.codePointAt(0)+1);
+            }
+        }
+        setLastTile(array[array.length-1]);
+        console.log(array);
+        setTiles(array);
+    }
+
     function clickHandler(e, hasClicked){
         
         changeTileState(e.target.textContent, !hasClicked);
         setAnimations("shuffle");
-        if(score === 9){
-
-        }else if(hasClicked){
+        if(hasClicked){
             setScore(0);
             resetGame();
             setTiles(shuffle(Tiles));
+            setShow(true);
         }else{
             
             setScore(score + 1);
@@ -75,19 +95,27 @@ export default function Game(props){
         }
         
     }
+
+    function changeShow(value){
+        setShow(value);
+    }
     //<Tile resetGame={resetGame} onClickHandler={clickHandler} name={item} key={i} value={reset} hScore={hScore}
     return(
-       
+        <div>
+
+        <Scene hScore = {hScore} show={show} changeShow={changeShow}></Scene>
         <div className = "container">
+            
             <div className = "scoreboard">
                 <Score score={score} name = "Score"/>
                 <Score score={hScore} name = "High Score"/>
             </div>
             <div className = "center">
-                <div className = {`gameContainer ${animations ? "shuffle" : ""}`} onClick = {()=>{setAnimations(true)}} onanimationend={()=>{setAnimations(false)}}>
+                <div className = {`gameContainer ${animations ? "shuffle" : ""}`} onClick = {()=>{setAnimations(true)}} onAnimationEnd={()=>{setAnimations(false)}}>
                     {Tiles.map((item, i) => {return <Tile resetGame={resetGame} onClickHandler={clickHandler} name={item.name} key={i} clicked={item.clicked} hScore={hScore}></Tile>})}
                 </div>
             </div>
+        </div>
         </div>
     );
 }
