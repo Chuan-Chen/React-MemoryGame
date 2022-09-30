@@ -3,9 +3,12 @@ import "./Scene.css";
 
 export default function Scene(props){
 
+    function clickHandler(){
+        props.changeShow(!props.show)
+    }
 
     return(
-        <div className = {`background ${props.show ? "": "noShow"}`}>
+        <div className = {`background ${props.show ? "": "noShow"}`} onClick={clickHandler}>
                 <div className = "t1">
                     Memory Game
                 </div>
@@ -15,7 +18,7 @@ export default function Scene(props){
                     <br/>every 9 points will get <br/> you a new board
                 </div>
             </div> 
-            <div className="btn" onClick={()=>{props.changeShow(!props.show);}}> Start </div>
+            <div className="btn" onClick={clickHandler}> Start </div>
             <div style = {{color: "white"}}>High Score: {props.hScore}</div>
         </div>
     )

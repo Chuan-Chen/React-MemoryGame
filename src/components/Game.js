@@ -4,6 +4,7 @@ import Scene from "./Scene"
 import Tile from "./Tile";
 import tiles from "./Tiles.json"
 import "./Game.css"
+//let startingTiles = [{name: "😄", clicked: false}, {name: "😁", clicked: false}, {name: "😆", clicked: false}, {name: "😅", clicked: false}, {name: "🤣", clicked: false}, {name: "😂", clicked:false}, {name: "🙂", clicked: false}, {name: "🙃", clicked: false}, {name: "😉", clicked:false}];
 
 export default function Game(props){
     const [score, setScore] = useState(0);
@@ -14,13 +15,26 @@ export default function Game(props){
     const [show, setShow] = useState(true);
 
     useEffect(()=>{
+        setTiles(shuffle(Tiles));
+        localStorage.setItem('tiles', JSON.stringify(Tiles));
+        if(localStorage.getItem('highscore')){
+            setTiles(JSON.parse(localStorage.getItem('tiles')));
+            sethScore(localStorage.getItem('highscore'));
+        }
+    },[]);
+
+    useEffect(()=>{
         if(score%9 === 0 && score != 0){
-            console.log("change board ")
-            console.log("score up", score)
+            localStorage.setItem('tiles', JSON.stringify(Tiles));
             changeBoard();
             resetGame();
         }
     },[score]);
+
+    useEffect(()=>{
+        localStorage.setItem('highscore', hScore);
+    },[hScore]);
+
 
     function shuffle(stuff){
         let array = [...stuff];
@@ -37,7 +51,6 @@ export default function Game(props){
 
     function changeTileState(item, click){
         let array = [...Tiles];
-        console.log(array)
         let index = -1;
         for(let i = 0; i < array.length; i++){
             if(array[i].name === item){
@@ -71,7 +84,6 @@ export default function Game(props){
             }
         }
         setLastTile(array[array.length-1]);
-        console.log(array);
         setTiles(array);
     }
 
@@ -85,9 +97,7 @@ export default function Game(props){
             setTiles(shuffle(Tiles));
             setShow(true);
         }else{
-            
             setScore(score + 1);
-            console.log("score up", score)
             setTiles(shuffle(Tiles));
             if(hScore <= score){
                 sethScore(score + 1);
@@ -95,11 +105,9 @@ export default function Game(props){
         }
         
     }
-
     function changeShow(value){
         setShow(value);
     }
-    //<Tile resetGame={resetGame} onClickHandler={clickHandler} name={item} key={i} value={reset} hScore={hScore}
     return(
         <div>
 
